@@ -32,7 +32,7 @@ Notes about this comparison:
 
 ## Test Pattern `single_plate_100um_x_100um_li1_over_substrate`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/single_plate_100um_x_100um_li1_over_substrate.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/single_plate_100um_x_100um_li1_over_substrate.gds.gz>
 
 {{< include /figures/test_patterns/single_plate_100um_x_100um_li1_over_substrate_-_overlap.qmd >}}
 
@@ -71,7 +71,7 @@ CapDebug ---
 
 ## Test Pattern `sidewall_20um_length_distance_200nm_li1`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/sidewall_20um_length_distance_200nm_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/sidewall_20um_length_distance_200nm_li1.gds.gz>
 
 {{< include /figures/test_patterns/sidewall_20um_length_distance_200nm_li1_-_overlap.qmd >}}
 
@@ -141,7 +141,7 @@ exttospice finished.
 
 ## Test Pattern `sideoverlap_simple_plates_li1_m1` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/sideoverlap_simple_plates_li1_m1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/sideoverlap_simple_plates_li1_m1.gds.gz>
 
 {{< include /figures/test_patterns/sideoverlap_simple_plates_li1_m1_-_overlap.qmd >}}
 
@@ -245,7 +245,7 @@ CapDebug (sideoverlaphalo): met1-li1 += 0.065426 fF …	now met1-li1 == 0.125232
 
 ## Test Pattern `overlap_shield_same_net_100um_x_100um_li1_m1_m2`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/overlap_shield_same_net_100um_x_100um_li1_m1_m2.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/overlap_shield_same_net_100um_x_100um_li1_m1_m2.gds.gz>
 
 Plates of $100\,\mu m \times 100\,\mu m$: `li1` and `met1` of net `A`, joined by an `mcon` in a corner, under `met2` of net `B`.
 `met1` shields `li1` from `met2`, although both are of net `A`.
@@ -274,14 +274,14 @@ Plates of $100\,\mu m \times 100\,\mu m$: `li1` and `met1` of net `A`, joined by
 : Extracted Parasitic Capacitances per Net Pair
 
 ::: {.callout-note}
-Up to [#299](https://github.com/iic-jku/klayout-pex/issues/299), only shapes of other nets shielded in `KPEX/2.5D`,
+Up to [#299](https://github.com/iic-jku/kpex/issues/299), only shapes of other nets shielded in `KPEX/2.5D`,
 so `A` ↔ `B` also got the overlap of `met2` and `li1` below `met1`: $1338.6 + 375.6 = 1714.2\,fF$.
 :::
 
 
 ## Test Pattern `overlap_shield_same_net_half_100um_x_100um_li1_m1_m2`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/overlap_shield_same_net_half_100um_x_100um_li1_m1_m2.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/overlap_shield_same_net_half_100um_x_100um_li1_m1_m2.gds.gz>
 
 The same plates, but `met1` covers only the left half of `li1`:
 `met2` overlaps `met1` on the left half and `li1` on the right half.
@@ -311,14 +311,14 @@ The same plates, but `met1` covers only the left half of `li1`:
 : Extracted Parasitic Capacitances per Net Pair
 
 ::: {.callout-note}
-Up to [#299](https://github.com/iic-jku/klayout-pex/issues/299), `KPEX/2.5D` also counted the overlap of `met2` and `li1`
+Up to [#299](https://github.com/iic-jku/kpex/issues/299), `KPEX/2.5D` also counted the overlap of `met2` and `li1`
 below `met1` (the left half), so `A` ↔ `B` was $861.896 + 187.8 = 1049.696\,fF$.
 :::
 
 
 ## Test Pattern `plate_20um_x_20um_li1_over_ntap`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/plate_20um_x_20um_li1_over_ntap.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/plate_20um_x_20um_li1_over_ntap.gds.gz>
 
 A `li1` plate of $20\,\mu m \times 20\,\mu m$ of net `A` over the middle of an n-tap of $40\,\mu m \times 40\,\mu m$ in an nwell of net `W`.
 The tap is active area like the source/drain, so `li1` has the capacitance of the diffusion to it.
@@ -346,14 +346,14 @@ The tap is active area like the source/drain, so `li1` has the capacitance of th
 
 ::: {.callout-note}
 - `KPEX/2.5D` has no capacitance between the nwell and the substrate, the PDK models that junction as a diode.
-- Up to [#301](https://github.com/iic-jku/klayout-pex/issues/301), `KPEX/2.5D` didn't know the taps in the capacitance extraction,
+- Up to [#301](https://github.com/iic-jku/kpex/issues/301), `KPEX/2.5D` didn't know the taps in the capacitance extraction,
   so `li1` had the capacitance to the nwell below the tap: `A` ↔ `W` $17.82\,fF$.
 :::
 
 
 ## Test Pattern `plate_20um_x_20um_li1_over_ptap`
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/plate_20um_x_20um_li1_over_ptap.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/plate_20um_x_20um_li1_over_ptap.gds.gz>
 
 The same plate over a p-tap, which a `licon` in its corner ties to the `li1` pad `VSS`
 (like in the standard cells, as in the sky130A LVS deck only the `licon` joins a p-tap to a net).
@@ -386,13 +386,13 @@ The same plate over a p-tap, which a `licon` in its corner ties to the `li1` pad
   $36.99\,aF/\mu m^2$ ($14.80\,fF$), but its fringe the diffusion's: $18.31\,fF$ to the one node `VSS`.
 - `KPEX/2.5D` has the p-tap as diffusion, the same stack as the source/drain, like the n-tap: $55.3\,aF/\mu m^2$ ($22.12\,fF$).
 - In the sky130A LVS deck, the p-tap (`VSS`) and the substrate (`VSUBS`) are different nets, `MAGIC` joins them.
-- Up to [#301](https://github.com/iic-jku/klayout-pex/issues/301), `KPEX/2.5D` had `li1` over the field: `A` ↔ `VSUBS` $18.05\,fF$.
+- Up to [#301](https://github.com/iic-jku/kpex/issues/301), `KPEX/2.5D` had `li1` over the field: `A` ↔ `VSUBS` $18.05\,fF$.
 :::
 
 
 ## Test Pattern `r_single_wire_li1` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_single_wire_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_single_wire_li1.gds.gz>
 
 {{< include /figures/test_patterns/r_single_wire_li1.qmd >}}
 
@@ -437,7 +437,7 @@ They are not realistic examples, so it appears to be a bug in that corner case, 
 
 ## Test Pattern `r_wire_voltage_divider_li1` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_wire_voltage_divider_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_wire_voltage_divider_li1.gds.gz>
 
 ![](/figures/test_patterns/r_wire_voltage_divider_li1.png){fig-alt="Crossection through the via stack"}
 
@@ -465,7 +465,7 @@ R2 C.n0 C 72.5338
 
 ## Test Pattern `r_contact_1x1_minsize_mcon` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_contact_1x1_minsize_mcon.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_contact_1x1_minsize_mcon.gds.gz>
 
 {{< include /figures/test_patterns/r_contact_1x1_minsize_mcon.qmd >}}
 
@@ -543,7 +543,7 @@ ResDoContacts: (null) (0.085, 0.085) <-> (null) (0.085, 0.085) @ v0
 
 ## Test Pattern `r_contact_2x2_minsize_mcon` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_contact_2x2_minsize_mcon.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_contact_2x2_minsize_mcon.gds.gz>
 
 {{< include /figures/test_patterns/r_contact_2x2_minsize_mcon.qmd >}}
 
@@ -609,7 +609,7 @@ ResDoContacts: (null) (0.265, 0.265) <-> (null) (0.265, 0.265) @ v0
 
 ## Test Pattern `r_via_stack_1x1_minsize_poly_to_met5` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_via_stack_1x1_minsize_poly_to_met5.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_via_stack_1x1_minsize_poly_to_met5.gds.gz>
 
 On each metal layer, a pin is placed directly in middle of the via.
 ![](figures/test_patterns/r_via_stack_1x1_minsize_poly_to_met5.svg){fig-alt="Crossection through the via stack"}
@@ -687,7 +687,7 @@ R10 li1.n0 met4 0.00687288
 
 ## Test Pattern `nfet_li1_redux` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1_redux.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1_redux.gds.gz>
 
 ![](figures/test_patterns/r_nfet_li1_redux.png){fig-alt="nfet example"}
 
@@ -731,7 +731,7 @@ Notes about this comparison:
 
 ## Test Pattern `nfet_li1` 
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1.gds.gz>
 
 ![nfet example (2D layout view)](figures/test_patterns/r_nfet_li1.png){fig-alt="nfet example"}
 

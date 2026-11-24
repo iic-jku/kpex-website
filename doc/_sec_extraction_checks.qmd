@@ -289,7 +289,7 @@ There are **no default ratio bounds**. An evaluable automatic comparison is `inf
 
 ### Example: MOM Plates below a Separate Route {#sec-device-capacitance-example}
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/v0.9.0/testdata/designs/ihp-sg13g2/test_patterns/cap_cmomf_w10u_l25u_m2_m4_m5_wire.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/v0.9.0/testdata/designs/ihp-sg13g2/test_patterns/cap_cmomf_w10u_l25u_m2_m4_m5_wire.gds.gz>
 
 {{< include /figures/check-device-capacitance-layout.qmd >}}
 

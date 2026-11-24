@@ -23,10 +23,10 @@ limitations under the License.
 
 ## Example Layouts
 
-Example layouts are included in the `testdata/designs` subdirectory of the KLayout-PEX source code:
+Example layouts are included in the `testdata/designs` subdirectory of the KPEX source code:
 ```bash
-git clone https://github.com/iic-jku/klayout-pex.git
-cd klayout-pex
+git clone https://github.com/iic-jku/kpex.git
+cd kpex
 
 # for sky130A
 find testdata/designs/sky130A -name "*.gds.gz"
@@ -70,7 +70,7 @@ Each run directory contains `kpex_result.json`, which records the output paths, 
 
 `kpex pex25d` generates a PEX25D geometry and material description without running a solver. It is separate from the analytical KPEX/2.5D engine. See @sec-pex25d for the format specification, benefits, and standalone tools.
 
-From the KLayout-PEX source directory:
+From the KPEX source directory:
 
 ```bash
 kpex pex25d --pdk sky130A --blackbox y \
@@ -94,7 +94,7 @@ For a complete, hand-written file that can be validated and exported without lay
 
 Preconditions:
 
-- `klayout-pex` was installed, see @sec-intro-installation
+- `kpex` was installed, see @sec-intro-installation
 - `FasterCap` was installed, see @sec-intro-installation
 
 ### Extracting Full Capacitor Geometry {#sec-first-steps-field-solver-whitebox}
@@ -163,7 +163,7 @@ In addition, a SPICE netlist is generated.
 
 Preconditions:
 
-- `klayout-pex` was installed, see @sec-intro-installation
+- `kpex` was installed, see @sec-intro-installation
 - `magic` was installed, see @sec-intro-installation
 
 The `MAGIC` section of `kpex extract --help` describes the arguments and their defaults. Important arguments:

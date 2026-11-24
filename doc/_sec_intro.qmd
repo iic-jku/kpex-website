@@ -28,11 +28,11 @@ To be able to simulate these effects, a parasitic extraction tool (PEX) is used,
 
 {{< include _funding_note.qmd >}}
 
-## About KLayout-PEX
+## About KPEX
 
 [KLayout](https://klayout.de) is an open source VLSI layout viewer and editor.
 
-[KLayout-PEX]({{< var urls.pypi.kpex >}}) (short `KPEX`) is a PEX tool, well integrated with `KLayout` by using its API.
+[KPEX]({{< var urls.pypi.kpex >}}), formerly KLayout-PEX, is a parasitic extraction tool built on the `KLayout` API.
 
 There are multiple PEX engines supported, currently:
 
@@ -42,9 +42,9 @@ There are multiple PEX engines supported, currently:
 * Analytical 2.5D engine (parasitic concepts and formulas of MAGIC, implemented using KLayout methods)
 
 ::: {.callout-tip}
-KPEX *tool* source code itself is made publicly available on GitHub ([follow this link](https://github.com/iic-jku/klayout-pex)) and shared under the GPL-3.0 license.
+KPEX *tool* source code itself is made publicly available on GitHub ([follow this link](https://github.com/iic-jku/kpex)) and shared under the GPL-3.0 license.
 
-KPEX *documentation* source code is made publicly available on GitHub ([follow this link](https://github.com/iic-jku/klayout-pex-website)) and shared under the Apache-2.0 license.
+KPEX *documentation* source code is made publicly available on GitHub ([follow this link](https://github.com/iic-jku/kpex-website)) and shared under the Apache-2.0 license.
 
 Please feel free to create issues and/or submit pull requests on GitHub to fix errors and omissions!
 
@@ -64,9 +64,10 @@ Eventually, critical parts will be re-implemented in `Rust` and parallelized to 
 
 ## Installation {#sec-intro-installation}
 
-Generally, `KPEX` is deployed using PyPi (Python Package Index), install via:
+Install `kpex` from PyPI with Python 3.12 or newer. If you are migrating from `klayout-pex`, use a fresh virtual environment because both distributions provide the same command-line entry points.
+
 ```bash
-pip3 install --upgrade klayout-pex
+python3 -m pip install --upgrade kpex
 
 kpex --version   # check the installed version 
 kpex --help      # this will help with command line arguments
@@ -104,7 +105,7 @@ A summary of important Linux shell commands is provided in [IIC-JKU Linux Cheats
   - Follow the [installation instructions](https://github.com/RTimothyEdwards/magic/blob/master/INSTALL) at the [GitHub repository](https://github.com/RTimothyEdwards/magic/)
 
 - [Skywater sky130A PDK](https://skywater-pdk.readthedocs.io):
-  - optional, for now, KPEX technology specific files are deployed within the `klayout-pex` Python package
+  - optional, for now, KPEX technology specific files are deployed within the `kpex` Python package
   - `pip3 install --upgrade ciel`  (install PDK package manager)
   - `ciel ls-remote --pdk sky130A` (retrieve available PDK releases
     - for example `PRE-RELEASE 0c1df35fd535299ea1ef74d1e9e15dedaeb34c32 (2024.12.11)`)
@@ -112,7 +113,7 @@ A summary of important Linux shell commands is provided in [IIC-JKU Linux Cheats
   - PDK files now have been installed under `$HOME/.volare/sky130A`
 
 - [IHP SG13G2 PDK](https://github.com/IHP-GmbH/IHP-Open-PDK):
-  - optional, for now, KPEX technology specific files are deployed within the `klayout-pex` Python package
+  - optional, for now, KPEX technology specific files are deployed within the `kpex` Python package
   - `pip3 install --upgrade ciel`  (install PDK package manager)
   - `ciel ls-remote --pdk ihp-sg13g2` (retrieve available PDK releases
     - for example `PRE-RELEASE cb7daaa8901016cf7c5d272dfa322c41f024931f (2025.07.18)`)
@@ -121,7 +122,7 @@ A summary of important Linux shell commands is provided in [IIC-JKU Linux Cheats
 
 ### Checking Tool Versions {#sec-tool-version-checks}
 
-The Python package requires `klayout>=0.30.12`. `KLayout 0.30.13` is recommended for terminal-lookup performance, neighborhood-visitor memory fixes and resistance-extraction crash fixes. The recommendation is a warning, so an environment still shipping `0.30.12` can run.
+`KPEX 0.12.0` requires `KLayout 0.30.14` or newer for the Python module and for the executable when running LVS. This version preserves disconnected polygons of a device terminal. Regenerate older LVS databases for designs with these terminals to recover the complete terminal geometry.
 
 The CLI checks the Python module and the executable separately when both are used. Updating one does not update the other. An LVS-database-only extraction can use the module without the executable. The runtime table lists the version found, the required range and the recommended range.
 
@@ -134,7 +135,7 @@ The CLI checks the Python module and the executable separately when both are use
 
 An unrecognized tool version is reported as unchecked. `warn` and `off` do not repair the numerical or performance defects of an older executable.
 
-For `--magic`, `KPEX 0.9.0` requires `MAGIC 8.3.693` or newer, which removes an extra sidewall halving. Pure `--2.5D` extraction does not require a `MAGIC` executable. The remaining multi-polygon device-terminal limitation is separate from the recommendation to upgrade `KLayout` and is not resolved by installing `0.30.13`.
+For `--magic`, use `MAGIC 8.3.693` or newer for the corrected sidewall counting. Pure `--2.5D` extraction does not require a `MAGIC` executable.
 
 ### Useful tools: `meshlab` {#sec-intro-meshlab}
 

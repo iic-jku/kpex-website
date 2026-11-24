@@ -84,7 +84,7 @@ These offsets apply to physical export. They do not resize polygons for analytic
 
 The example has two drawn 100 µm square plates: `li1` from $(0,0)$ to $(100,100)$ µm, and `met1` from $(50,50)$ to $(150,150)$ µm. Their drawn overlap is 50 µm square. Download the [LVS database](../data/tech/examples/physical-corners/overlap.lvsdb.gz) and the [`sky130A` catalog bundle](../data/tech/sky130A.zip).
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/overlap_plates_100um_x_100um_li1_m1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/overlap_plates_100um_x_100um_li1_m1.gds.gz>
 
 ```bash
 mkdir -p catalogs
@@ -181,7 +181,7 @@ A layout containing an unavailable profile **or a contact touching it** is rejec
 
 For example, download the [MIM LVS database](../data/tech/examples/physical-corners/mim.lvsdb.gz):
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/cap_mim_m3_20um_x_20um_over_m2_wire.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/cap_mim_m3_20um_x_20um_over_m2_wire.gds.gz>
 
 ```bash
 kpex pex25d --pdk sky130A \

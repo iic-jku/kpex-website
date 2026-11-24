@@ -2,13 +2,13 @@
 pagetitle: "About"
 ---
 
-[![PyPi](https://img.shields.io/pypi/v/klayout-pex)](https://pypi.org/project/klayout-pex/)
-[![GitHub issues](https://img.shields.io/badge/issue_tracking-github-blue.svg)](https://github.com/iic-jku/klayout-pex/issues)
-[![Quarto Publish](https://github.com/iic-jku/klayout-pex-website/actions/workflows/publish-quarto-github-pages.yml/badge.svg?branch=main)](https://github.com/iic-jku/klayout-pex-website/actions/workflows/publish-quarto-github-pages.yml)
+[![PyPI](https://img.shields.io/pypi/v/kpex)](https://pypi.org/project/kpex/)
+[![GitHub issues](https://img.shields.io/badge/issue_tracking-github-blue.svg)](https://github.com/iic-jku/kpex/issues)
+[![Quarto Publish](https://github.com/iic-jku/kpex-website/actions/workflows/publish-quarto-github-pages.yml/badge.svg?branch=main)](https://github.com/iic-jku/kpex-website/actions/workflows/publish-quarto-github-pages.yml)
 
-# KLayout-PEX
+# KPEX
 
-KLayout-PEX is a parasitic extraction tool for [KLayout](https://klayout.org).
+KPEX is a parasitic extraction tool for [KLayout](https://klayout.org).
 
 There are multiple engines supported:
 
@@ -20,12 +20,12 @@ Check out the [documentation](doc/doc.qmd) for more information.
 
 ## Install
 
-`pip install klayout-pex`
+`python3 -m pip install kpex`
 
 After that, you should be able to run `kpex --help`.
 
 ::: {.callout-caution}
-The `klayout-pex` PyPi package contains neither [`FasterCap`](https://github.com/iic-jku/FasterCap) nor [MAGIC](https://github.com/RTimothyEdwards/magic).
+The `kpex` PyPI package contains neither [`FasterCap`](https://github.com/iic-jku/FasterCap) nor [MAGIC](https://github.com/RTimothyEdwards/magic).
 To be able to run these engines, the binaries for these tools must be installed separately beforehand.
 Check out the [installation documentation](doc/doc.qmd#sec-intro-installation) for more information.
 :::
