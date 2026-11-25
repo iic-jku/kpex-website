@@ -1,0 +1,91 @@
+::: {.content-hidden}
+Copyright (C) 2024-2026 Martin Köhler and co-authors (martin.koehler@jku.at)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+:::
+
+# Qualifying Calibration Measurements {#sec-calibration-qualification}
+
+A single field solve yields a capacitance matrix for one mesh, one numerical tolerance and one finite domain. Before fitting coefficients, repeat the same physical experiment at progressively finer settings. Each series changes one control and ends at the same reference run.
+
+| Study | Adjustment from coarse to fine | Held fixed |
+| :--- | :--- | :--- |
+| Iterative solver | Decrease `--fastercap-gmres-tolerance` | Exported solver inputs and all other controls |
+| Initial mesh | Decrease `--mesh-max-area-um2` | Physical scene and FasterCap refinement settings |
+| Domain | Increase the preparation's `domain_margin_um` | Stack, conductors, ground height and solver settings |
+
+: Three independent series around a common reference. Each needs at least three distinct runs. The mesh series also needs increasing observed refined panel counts. {#tbl-calibration-qualification-axes tbl-colwidths="[22,36,42]"}
+
+Use manual FasterCap mode throughout. Automatic refinement couples solver and mesh effects, which prevents the series from isolating either effect.
+
+## Studying One Plate Pattern {#sec-calibration-qualification-example}
+
+Make three preparations of the same pattern with `domain_margin_um` set to `2`, `4` and `8` µm. Solve seven variants and arrange their collected results relative to the study file. The reference settings below are from a two-metal test stack with a coating.
+
+```bash
+kpex calibrate solve --manifest margin-8/manifest.json \
+  --fastercap-mesh-refinement 0.06 --fastercap-gmres-tolerance 1e-8 \
+  --mesh-max-area-um2 0.25 --out-dir reference
+```
+
+For the two extra runs in each series, change only the value shown here. Use directories named after the runs so their `collection/collection.pb.json` files can be referred to from one study:
+
+| Series | First run | Second run | Reference |
+| :--- | :--- | :--- | :--- |
+| GMRES tolerance | `solver-coarse`, `1e-4` | `solver-medium`, `1e-6` | `1e-8` |
+| Initial maximum triangle area | `mesh-coarse`, `2` µm² | `mesh-medium`, `0.75` µm² | `0.25` µm² |
+| Domain margin | `domain-small`, `2` µm | `domain-medium`, `4` µm | `8` µm |
+
+: Settings for the plate study. Each run writes a raw collection of full-precision FasterCap evidence. {#tbl-calibration-qualification-example tbl-colwidths="[26,27,27,20]"}
+
+Write a `CalibrationQualificationStudy` in protobuf JSON. The `collections` list binds an ID to a path relative to the study file and the SHA-256 of that collection file. In `cases`, set `case_id` to the prepared pattern ID and `reference_collection_id` to `reference`. Each refinement specifies an `axis` (`GMRES_TOLERANCE`, `INITIAL_MESH_MAX_AREA` or `DOMAIN_MARGIN`) and the three `collection_ids` in coarse-to-fine order. The final ID in each list is `reference`.
+
+```bash
+kpex calibrate qualify --study study.pb.json --out-dir qualification
+```
+
+## Reading the Qualification Report {#sec-calibration-qualification-report}
+
+The report checks reciprocity ($C_{ij}=C_{ji}$), Maxwell matrix signs, nonnegative charge-row sums and nonnegative electrostatic energy within the declared tolerances. It retains separate diagnostics for the native matrix and the grounded principal submatrix. It records but does not correct asymmetry. In charge-row convention, $Q_i=\sum_j C_{ij}V_j$, so a capacitance to the exterior reference can make the row sum positive.
+
+The study declares an absolute floor $a$ in farads and a relative tolerance $r$. For each entry, the budget is $\max(a,r|C_{ij}^{\mathrm{ref}}|)$. Both of the two most recent changes must meet that budget in every entry. A reference entry at or below the absolute floor is marked unresolved.
+
+| Varied control | Largest change, coarse to medium | Largest change, medium to reference |
+| :--- | ---: | ---: |
+| GMRES tolerance | 0.0089 aF | 0.00015 aF |
+| Initial mesh area | 17.33 aF | 6.87 aF |
+| Domain margin | 10.09 aF | 1.33 aF |
+
+: Observed changes in the grounded plate matrix from one FasterCap 6.4.0 run on macOS ARM64. The declared budget used an absolute floor of 2 aF and a relative tolerance of 2%. {#tbl-calibration-qualification-observations tbl-colwidths="[30,35,35]"}
+
+The GMRES series barely changes the matrix. Yet the native matrix at the reference has a maximum reciprocity defect of 149.45 aF, and one coarse-to-medium domain change exceeds its 9.43 aF entry budget. The case is `REJECTED`. A small GMRES change alone gives no evidence that the finite-domain or mesh error is small.
+
+`STABILIZED` means the physical checks and all three series met the declared budget. `INCOMPLETE` means evidence is missing, controls changed together, or the observed changes exceed the budget. `REJECTED` marks failed solver evidence or matrix diagnostics. The command writes `qualification.pb.json` for all three outcomes and exits with a diagnostic error if any case did not stabilize. The report describes numerical behavior of this solver and physical stack. Qualification against measured silicon needs separate evidence.
+
+## Choosing a Reference {#sec-calibration-reference}
+
+Start with a geometry whose capacitance is known. Two rectangular conductors that cover the top and bottom faces of a dielectric box produce a uniform field when the side walls are insulating. For a 10 µm by 20 µm cell, a separation of 2 µm and relative permittivity 3.9, the exact value is 3.453133 fF. Palace and Elmer reproduced that value on the same mesh.
+
+Opening the sides gives the field room to spread around the plate perimeter. That spread adds fringe capacitance. In an open FasterCap 6.4.0 calculation with the same separation and a homogeneous dielectric of relative permittivity 3.9, the extra capacitance grows much more slowly than the plate area.
+
+| Plate dimensions | Uniform-field capacitance | Open-domain capacitance |
+| :--- | ---: | ---: |
+| 10 µm × 20 µm | 3.453 fF | 4.870 fF |
+| 20 µm × 40 µm | 13.813 fF | 16.509 fF |
+| 40 µm × 80 µm | 55.250 fF | 60.685 fF |
+
+: Rectangular plates with the same separation. Doubling both dimensions quadruples the area and doubles the perimeter. The additional capacitance from fringing is approximately proportional to the perimeter in this example. {#tbl-calibration-rectangular-reference tbl-colwidths="[31,35,34]"}
+
+For a realistic stack, compare independent solution methods with matched material properties, terminal voltages and outer-boundary conditions. Check mesh and domain convergence in each solver. On the coated plate example, Palace and Elmer agreed on the `A` ↔ `B` coupling on the same linear tetrahedral mesh. Refining the mesh at the same domain size moved both results from about 640 aF to 512 aF. Higher-order Palace elements changed the last two results from about 487 aF to 482 aF. The comparison shows why agreement on a single mesh gives less evidence than agreement after independent refinement.
+
+Palace's standard capacitance matrix is symmetric by its energy construction. The independently integrated surface charges showed a maximum reciprocity discrepancy of 397 aF on the coarse linear mesh and 84 aF on the refined quadratic mesh. Elmer's capacitance output also enforces symmetry. Compare mesh convergence, boundary sensitivity and a known reference value in addition to the matrix's symmetry. [Palace electrostatics](https://awslabs.github.io/palace/stable/reference/#electrostatic-simulations) · [Elmer electrostatics implementation](https://github.com/ElmerCSC/elmerfem/blob/devel/fem/src/modules/StatElecSolve.F90)
