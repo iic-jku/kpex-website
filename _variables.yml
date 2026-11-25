@@ -1,6 +1,6 @@
 urls:
   repo:
-    kpex: https://github.com/iic-jku/klayout-pex
-    kpex-website: https://github.com/iic-jku/klayout-pex-website
+    kpex: https://github.com/iic-jku/kpex
+    kpex-website: https://github.com/iic-jku/kpex-website
   pypi:
-    kpex: https://pypi.org/project/klayout-pex/
+    kpex: https://pypi.org/project/kpex/

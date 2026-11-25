@@ -284,7 +284,7 @@ The built-in definitions are produced by Python generators[^tech-gen-script]. Th
 For a source change:
 
 1. Change the relevant PDK generator and maintain its source records, assumptions and data-revision history as in @sec-corner-data-history
-2. Run `./gen_tech_pb.sh` from the `klayout-pex` checkout to regenerate the schema modules and all built-in JSON definitions
+2. Run `./gen_tech_pb.sh` from the `kpex` checkout to regenerate the schema modules and all built-in JSON definitions
 3. Compare the resulting tables by physical layer and coefficient family
 4. Check the affected geometries and sibling variants before interpreting changed extraction values
 
@@ -298,7 +298,7 @@ The `sky130A` development catalog also provides four fixed-layout resistance sen
 
 The previews below show the complete resolved nominal `Technology` messages for the development version following `0.9.0`. They contain the selected coefficients, physical stack and device interfaces used by extraction. The catalog examples in @sec-corner-catalog-json show how these components are selected and how their provenance is recorded.
 
-To inspect the data actually installed, locate `klayout_pex_protobuf` beside the `klayout_pex` package in `site-packages`[^kpex-site-packages]. The resolved nominal snapshots use the PDK identifiers from @tbl-pdk-variants, followed by `_tech.pb.json`. The catalogs and their component datasets are under `tech/<PDK>/`.
+To inspect the data actually installed, locate `kpex_protobuf` beside the `kpex` package in `site-packages`[^kpex-site-packages]. The resolved nominal snapshots use the PDK identifiers from @tbl-pdk-variants, followed by `_tech.pb.json`. The catalogs and their component datasets are under `tech/<PDK>/`.
 
 Each process-stack layer declares its kind in `layer_type` and supplies exactly one matching `parameters` payload. For example, `LAYER_TYPE_METAL` requires `metal_layer`. Unspecified or unknown kinds, missing payloads and mismatches are rejected when the technology is loaded.
 

@@ -4,7 +4,7 @@
 ## Johannes Kepler University, Institute for Integrated Circuits.
 ##
 ## This file is part of KPEX Documentation 
-## (see https://github.com/iic-jku/klayout-pex-website).
+## (see https://github.com/iic-jku/kpex-website).
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ project:
     - "data/tech/**"
 
 var:
-  url-repo: https://github.com/iic-jku/klayout-pex-website   # to call this value : {{< meta var.url-repo >}}
+  url-repo: https://github.com/iic-jku/kpex-website   # to call this value : {{< meta var.url-repo >}}
 
 website:
-  title: "KLayout-PEX"
+  title: "KPEX"
   navbar:
     background: "#447099"
     search: true

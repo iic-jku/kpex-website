@@ -1,8 +1,8 @@
 # Project conventions
 
-The documentation of KLayout-PEX, a Quarto website and a PDF. The rules of the code repository
+The documentation of KPEX, a Quarto website and a PDF. The rules of the code repository
 hold here as well, in particular for PR texts:
-<https://github.com/iic-jku/klayout-pex/blob/main/AGENTS.md>.
+<https://github.com/iic-jku/kpex/blob/main/AGENTS.md>.
 
 Before adding a kind of figure or table, look up how the docs do it and use the same mechanism,
 not something that only looks the same.
@@ -46,7 +46,7 @@ not something that only looks the same.
 - Layout screenshots come from `notebooks/test_pattern_screenshots.ipynb`, not from the GUI.
   - They are `figures/test_patterns/<pattern>_-_<aspect>.png`, 2112 px wide, as the figures show
     them at the same width
-  - The notebook needs the `klayout` Python module, and `KPEX_DIR`, the checkout of `klayout-pex`
+  - The notebook needs the `klayout` Python module, and `KPEX_DIR`, the checkout of `kpex`
     with the GDS
 - Text, lines and frames over a screenshot are a `{python}` cell with `drawsvg`, in
   `figures/test_patterns/<pattern>_-_<aspect>.qmd`, e.g.

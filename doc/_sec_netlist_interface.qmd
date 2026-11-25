@@ -57,7 +57,7 @@ kpex extract --pdk sky130A --2.5D --mode CC --blackbox y \
   --schematic ordered.spice --out-netlist ordered-extracted.spice
 ```
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/nfet_li1.gds.gz>
 
 The declaration and device lines from that run are:
 

@@ -4,7 +4,7 @@
 ## Johannes Kepler University, Institute for Integrated Circuits.
 ##
 ## This file is part of KPEX Documentation 
-## (see https://github.com/iic-jku/klayout-pex-website).
+## (see https://github.com/iic-jku/kpex-website).
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -47,14 +47,14 @@ jobs:
       - name: Check out shared APT setup
         uses: actions/checkout@v7
         with:
-          repository: iic-jku/klayout-pex
+          repository: iic-jku/kpex
           ref: 05cdc1920fd0eb9ece338e34333f3ff4d8ef41a6
-          path: .ci-dependencies/klayout-pex
+          path: .ci-dependencies/kpex
           sparse-checkout: .github/actions/setup-apt
           persist-credentials: false
 
       - name: Configure Ubuntu package downloads
-        uses: ./.ci-dependencies/klayout-pex/.github/actions/setup-apt
+        uses: ./.ci-dependencies/kpex/.github/actions/setup-apt
 
       - name: Install APT dependencies
         timeout-minutes: 5

@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2024 Martin Jan Köhler and Harald Pretl
 Johannes Kepler University, Institute for Integrated Circuits.
 
 This file is part of KPEX Documentation 
-(see https://github.com/iic-jku/klayout-pex-website).
+(see https://github.com/iic-jku/kpex-website).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ SPDX-License-Identifier: Apache-2.0
 -->
 ## KPEX Extractor Documentation
 
-[![Quarto Publish](https://github.com/iic-jku/klayout-pex-website/actions/workflows/publish-quarto-github-pages.yml/badge.svg?branch=main)](https://github.com/iic-jku/klayout-pex-website/actions/workflows/publish-quarto-github-pages.yml)
+[![Quarto Publish](https://github.com/iic-jku/kpex-website/actions/workflows/publish-quarto-github-pages.yml/badge.svg?branch=main)](https://github.com/iic-jku/kpex-website/actions/workflows/publish-quarto-github-pages.yml)
 [![DOI](https://zenodo.org/badge/900902790.svg)](https://doi.org/10.5281/zenodo.17822518)
 
 ###
 
-Online at https://iic-jku.github.io/klayout-pex-website/
+Online at https://iic-jku.github.io/kpex-website/
 
 ### Prerequisites
 

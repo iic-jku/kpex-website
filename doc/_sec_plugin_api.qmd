@@ -39,13 +39,15 @@ Running the solver and reading its results back into `kpex extract` is not part 
 ::: {.callout-caution}
 The plugin API `v1` is provisional: it is currently tested together with colleagues, and may still change until it is declared stable. Afterwards, breaking changes will get a new version `v2`, with their own entry point groups.
 
-Declare the range of `klayout-pex` versions supported by the plugin. The maintained `gmsh`, `elmer` and `palace` plugins at version `0.1.1` require `klayout-pex>=0.6.2,<1`, allowing later `0.x` releases. That package range does not make the provisional API stable; plugin maintainers still need to check compatibility when it changes.
+Declare the range of `kpex` versions supported by the plugin. The renamed plugin series starts at `0.3.0` and declares `kpex>=0.12.0,<1`. Recheck compatibility when the provisional API changes.
 :::
 
 ### Using Plugins {#sec-plugin-api-using}
 
+Use a fresh virtual environment with the renamed packages to avoid duplicate exporter registrations.
+
 ```bash
-pip3 install --upgrade klayout-pex-plugin-palace
+python3 -m pip install --upgrade kpex-plugin-gmsh
 
 pex25d plugins     # overview: selector, package, version, description
 pex25d exporters   # selectors only, one per line (for scripts)
@@ -57,7 +59,7 @@ pex25d importers
 Selecting a plugin:
 
 - by its name, e.g. `--to palace`
-- by `package:name`, if two packages provide the same name, e.g. `--to klayout-pex:stl`
+- by `package:name`, if two packages provide the same name, e.g. `--to kpex:stl`
 - built-in plugins take precedence for plain names
 
 Plugin specific options are passed with `--option NAME=VALUE` (since `klayout-pex` 0.6.3). The value is read as JSON if possible (`10`, `1e-9`, `true`), otherwise as text:
@@ -76,11 +78,11 @@ pex25d export cell.pex25d --to palace --out-dir deck \
 
 ### Writing a Plugin {#sec-plugin-api-writing}
 
-A plugin is a Python package, which registers a factory function under one of the entry point groups. The factory is called without arguments and returns an object implementing the protocol. The protocols are defined in `klayout_pex.plugin_api.v1`, deriving from them is optional.
+A plugin is a Python package, which registers a factory function under one of the entry point groups. The factory is called without arguments and returns an object implementing the protocol. The protocols are defined in `kpex.plugin_api.v1`, deriving from them is optional.
 
 For the plugins maintained by us, we use these conventions:
 
-- GitHub repository and PyPI package: `klayout-pex-plugin-<name>`
+- GitHub repository and PyPI package: `kpex-plugin-<name>`
 - Python package: `klayout_pex_plugins.<name>`
   - `site-packages/klayout_pex_plugins` is a namespace package shared by all plugins
   - it must not contain an `__init__.py`, otherwise all other plugins become invisible
@@ -89,8 +91,8 @@ The registration in `pyproject.toml`:
 
 ```toml
 [project]
-name = "klayout-pex-plugin-example"
-dependencies = ["klayout-pex>=0.6.3,<1"]
+name = "kpex-plugin-example"
+dependencies = ["kpex>=0.12.0,<1"]
 
 [project.entry-points."klayout_pex.exporters.v1"]
 nets = "klayout_pex_plugins.example:create_exporter"
@@ -135,7 +137,7 @@ A minimal exporter, which writes the net of each conductor into a text file:
 import os
 from typing import Any, List, Mapping, Optional
 
-from klayout_pex.plugin_api.v1 import ExportError, PEX25DSceneExporter
+from kpex.plugin_api.v1 import ExportError, PEX25DSceneExporter
 
 
 class NetsExporter(PEX25DSceneExporter):
@@ -173,7 +175,7 @@ Declaring a capability is a promise that the exporter implements it. A scene req
 Use the shared helpers for the same geometry and ownership rules as the built-in exporters. Given a resolved `scene` and a finite `field_region` in the scene's integer coordinate grid:
 
 ```python
-from klayout_pex.plugin_api.v1 import (
+from kpex.plugin_api.v1 import (
     ground_body,
     retained_ground_region,
     solver_body_names,
@@ -202,7 +204,7 @@ An exporter whose `export()` implements the complete accounting contract overrid
 
 ```python
 from typing import FrozenSet
-from klayout_pex.plugin_api.v1 import (
+from kpex.plugin_api.v1 import (
     PEX25DSceneExporter, SceneCapability,
 )
 
@@ -227,9 +229,9 @@ See @sec-pex25d-accounting for the text records, exact-grid rules and runnable e
 
 As examples for external exporters, we provide plugins for two open source FEM field solvers, both used for capacitance extraction (electrostatics):
 
-- [klayout-pex-plugin-elmer](https://github.com/iic-jku/klayout-pex-plugin-elmer): exporter `elmer` for [Elmer FEM](https://www.elmerfem.org) (`StatElecSolver`)
-- [klayout-pex-plugin-palace](https://github.com/iic-jku/klayout-pex-plugin-palace): exporter `palace` for [Palace](https://awslabs.github.io/palace/) (`Electrostatic` problem)
-- both use the volume mesh of [klayout-pex-plugin-gmsh](https://github.com/iic-jku/klayout-pex-plugin-gmsh), which is also available as exporter `gmsh`
+- [`kpex-plugin-elmer`](https://github.com/iic-jku/kpex-plugin-elmer): exporter `elmer` for [Elmer FEM](https://www.elmerfem.org) (`StatElecSolver`)
+- [`kpex-plugin-palace`](https://github.com/iic-jku/kpex-plugin-palace): exporter `palace` for [Palace](https://awslabs.github.io/palace/) (`Electrostatic` problem)
+- both use the volume mesh of [`kpex-plugin-gmsh`](https://github.com/iic-jku/kpex-plugin-gmsh), which is also available as exporter `gmsh`
 
 ![PEX25D Exporters for FEM Solvers](figures/kpex-plugin-fem-exporters.svg){#fig-kpex-plugin-fem-exporters}
 
@@ -243,10 +245,10 @@ The mesh is built in these steps:
 - the elements are refined at the conductor edges, where the field concentrates
   - by default, down to the thickness of the thinnest conductor layer
 
-Elmer FEM:
+Elmer FEM, once its `0.3.0` release appears on PyPI:
 
 ```bash
-pip3 install --upgrade klayout-pex-plugin-elmer
+python3 -m pip install --upgrade kpex-plugin-elmer
 
 pex25d export cell.pex25d --to elmer --out-dir elmer
 cd elmer
@@ -254,10 +256,10 @@ ElmerGrid 14 2 mesh.msh -autoclean   # gmsh mesh -> Elmer mesh
 ElmerSolver case.sif                 # writes cmatrix.dat
 ```
 
-Palace:
+Palace, once its `0.3.0` release appears on PyPI:
 
 ```bash
-pip3 install --upgrade klayout-pex-plugin-palace
+python3 -m pip install --upgrade kpex-plugin-palace
 
 pex25d export cell.pex25d --to palace --out-dir palace
 cd palace
@@ -271,6 +273,8 @@ Both solvers write the capacitance matrix in mutual form:
 - row/column $i$ belongs to the terminal group with tag $i$ in `mesh.json` (nets, floating conductors, ground plane)
 
 The options of the plugins (mesh sizes, element order, outer boundary condition, …) are listed in the `README` files of the repositories.
+
+The [KQCircuits plugin repository](https://github.com/iic-jku/kpex-plugin-kqcircuits) provides discovery and exporter contract tests for partner development. Invoking that exporter reports an unsupported operation with exit status `3`.
 
 ::: {.callout-note title="IIC-OSIC-TOOLS"}
 The `IIC-OSIC-TOOLS` Docker image (see @sec-intro-installation) contains Palace, Elmer FEM is not included yet. When running as `root`, call `palace -serial config.json`, as `mpirun` refuses to run as `root`.

@@ -43,7 +43,7 @@ kpex extract --pdk sky130A --2.5D --mode RC --corner nominal \
   --out-netlist divider.spice --out-result divider-result.json
 ```
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_wire_voltage_divider_li1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_wire_voltage_divider_li1.gds.gz>
 
 This example uses the bundled nominal data and a distributed wire pattern. Omitting `--corner nominal` produces the same technology selection while `nominal` is the catalog default.
 
@@ -256,7 +256,7 @@ The high-C scenario selects `"capacitance": "high"` under its distinct scenario 
 
 The following commands use the same `sky130A` layout of overlapping `li1` and `met1` plates for all three selections. The `CC` mode retains mutual and substrate capacitances; the nominal resistance selection is present in the catalog but does not add resistors in this mode.
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/overlap_plates_100um_x_100um_li1_m1.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/overlap_plates_100um_x_100um_li1_m1.gds.gz>
 
 ```bash
 unzip sky130A-sensitivity.zip
@@ -430,7 +430,7 @@ These selections support analytical extraction with `--2.5D`. They do not specif
 
 The [example LVS database](../data/tech/examples/sky130-via-stack.lvsdb.gz) contains one cut at each connection from `poly` to `met5`, with ports at the cut centres and no intervening wire length. Download the [`sky130A` catalog bundle](../data/tech/sky130A.zip) and keep the layout unchanged for all five selections.
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/sky130A/test_patterns/r_via_stack_1x1_minsize_poly_to_met5.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/sky130A/test_patterns/r_via_stack_1x1_minsize_poly_to_met5.gds.gz>
 
 ```bash
 unzip sky130A.zip
@@ -635,7 +635,7 @@ The low selection contains:
 
 The high selection names `high` for both capacitance and device references. Neither selection inherits the nominal MOM references.
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cap_cmim_20um_x_20um_over_m4_wire.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cap_cmim_20um_x_20um_over_m4_wire.gds.gz>
 
 The layout contains a 20 µm × 20 µm `cap_cmim` with terminals `A` ↔ `B`, above a separate `Metal4` route. Set `KPEX_DIR` to the source checkout, then run:
 

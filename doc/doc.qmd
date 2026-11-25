@@ -1,5 +1,5 @@
 ---
-title: KLayout-PEX Documentation
+title: KPEX Documentation
 author:
     - name: Martin Köhler
       orcid: 0009-0002-1780-6169
@@ -18,7 +18,7 @@ copyright:
   year: 2024-2026
 citation:
   doi: "10.5281/zenodo.17822519"
-  url: https://iic-jku.github.io/klayout-pex-website
+  url: https://iic-jku.github.io/kpex-website
 filters: ["inline-file-filter.lua"]
 format:
   html:

@@ -22,7 +22,7 @@ limitations under the License.
 
 The **PEX25D format** (Parasitic Extraction 2.5D) describes interconnect geometry and materials for exchange between tools. It combines two-dimensional (XY) conductor shapes with a vertical process stack, so a solver adapter can reconstruct the three-dimensional structure without the original layout or PDK files. The same structure can describe an electrostatic capacitance problem and, with resistance parameters and terminals, a DC resistance problem.
 
-This appendix specifies the PEX25D format and explains its protobuf API and command-line tools. Geometry-only output uses **`PEX25D 1.0-rc1`**; output with explicit capacitance accounting uses **`PEX25D 1.0-rc2 REQUIRES CAPABILITIES CAPACITANCE_ACCOUNTING`**. The format version is independent of the KLayout-PEX package version.
+This appendix specifies the PEX25D format and explains its protobuf API and command-line tools. Geometry-only output uses **`PEX25D 1.0-rc1`**; output with explicit capacitance accounting uses **`PEX25D 1.0-rc2 REQUIRES CAPABILITIES CAPACITANCE_ACCOUNTING`**. The format version is independent of the KPEX package version.
 
 ::: {.callout-note title="The PEX25D format and the KPEX/2.5D engine"}
 The **PEX25D format** defines an interchange description. `kpex pex25d` generates files in this format; `pex25d` inspects and processes them.
@@ -63,7 +63,7 @@ The workflow has five distinct operations:
 | Resolve relative geometry | Resolver; `pex25d resolve` | `PEX25DScene` |
 | Mesh and export for a solver | Exporter; `pex25d export` | Native solver input files |
 
-Importers and exporters are plugins: `klayout-pex` ships some of them, further ones are installed as separate Python packages.
+Importers and exporters are plugins: `kpex` ships some of them, further ones are installed as separate Python packages.
 
 The intended project architecture keeps layout and technology preparation in **Python** and moves computation-intensive portions into **C++** engines. The resolved binary scene is the interface between those stages: Python produces it, and C++ reads the same protobuf message through generated bindings. This is the direction for moving computation to C++; it does not mean all current engines have already been ported.
 
@@ -409,7 +409,7 @@ Device terminals use LVS terminal geometry on existing conductive profiles. Seve
 
 Source and drain terminals on diffusion are generated at the lower faces of their contact cuts. For example, `sky130A` MOS terminals use `licon_nsd_con` or `licon_psd_con`; `ihp-sg13g2` uses `cont_nsd_con` or `cont_psd_con`. The boundary follows the model contract: `gf180mcuD` diffusion-resistor terminals are on `Metal1`, because those resistor models include the contacts.
 
-The resolver clips Manhattan polygons exactly, including holes and disconnected intersections. Partial clipping of non-Manhattan polygons remains unsupported. The exporter can preserve only the device-terminal pieces supplied by LVS: the remaining multi-polygon terminal limitation in `KLayout` can omit pieces before export, including with `0.30.13`.
+The resolver clips Manhattan polygons exactly, including holes and disconnected intersections. Partial clipping of non-Manhattan polygons remains unsupported. The exporter preserves the device-terminal pieces supplied by LVS. Use `KLayout 0.30.14` or newer to preserve all the pieces, and regenerate affected databases produced with older versions.
 
 #### Computational domain {#sec-pex25d-domain}
 
@@ -426,7 +426,7 @@ Finite geometry includes conductor shapes and laterally bounded conformal films,
 
 ### Command-line tools {#sec-pex25d-cli}
 
-The `klayout-pex` package supplies `kpex` and the separate `pex25d` entry point. Check command availability with `--help`; older installed releases may not have these commands. 
+The `kpex` package supplies the `kpex` and `pex25d` commands. Run either command with `--help` to list its options.
 
 ```bash
 kpex pex25d --help
@@ -435,7 +435,7 @@ pex25d validate --help
 pex25d export --help
 ```
 
-Reading, converting and summarizing artifacts do not require KLayout, a layout, LVS or a running solver. Structural accounting checks are also independent of KLayout. Resolution of accounting masks requires the KLayout geometry backend; `validate` on an unresolved file performs that resolution too. Geometry-only stack resolution retains its format-only path. Generating from a layout and exporting through the current meshing backend also require KLayout. This is a runtime distinction; the distributed `klayout-pex` package still declares KLayout as a dependency.
+Reading, converting and summarizing artifacts do not require KLayout, a layout, LVS or a running solver. Structural accounting checks are also independent of KLayout. Resolution of accounting masks requires the KLayout geometry backend; `validate` on an unresolved file performs that resolution too. Geometry-only stack resolution retains its format-only path. Generating from a layout and exporting through the current meshing backend also require KLayout. This is a runtime distinction; the distributed `kpex` package still declares KLayout as a dependency.
 
 #### Generate from a layout: `kpex pex25d` {#sec-pex25d-generate}
 
@@ -536,7 +536,7 @@ pex25d export two_nets.pex25d \
 pex25d export two_nets.pex25d --to stl --out-dir solver/stl
 ```
 
-`--to` selects an exporter by its name, or by `package:name` when two installed packages provide the same name. `pex25d exporters` lists the installed ones. `klayout-pex` ships three exporters:
+`--to` selects an exporter by its name, or by `package:name` when two installed packages provide the same name. `pex25d exporters` lists the installed ones. `kpex` ships three exporters:
 
 - `fastercap` and `fastcap2` write a `.lst` entry file and its referenced surface files; keep them together.
 - `stl` writes the solids of the scene as STL files, one per dielectric and net, for viewing (e.g. in `MeshLab`).
@@ -545,7 +545,7 @@ File input is resolved automatically. Export generates meshes and input files, *
 
 Exporter options are passed with `--option NAME=VALUE`, which can be repeated (since `klayout-pex` 0.6.3). VALUE is read as JSON where it parses (`10`, `1e-9`, `true`), otherwise as text. For FasterCap and FastCap2, `--stl`, `--field-margin`, `--delaunay-amax`, `--delaunay-b`, and `--geo-check` are shorthands for their options. The default lateral field margin is 8 µm when the scene has no explicit or margin-derived domain.
 
-The built-in exporters write capacitance input. They do not extract a resistance network from `SHEET`, `PER_CUT`, or terminal records. Exporters for the FEM solvers Elmer and Palace are available as separate packages, [klayout-pex-plugin-elmer](https://github.com/iic-jku/klayout-pex-plugin-elmer) and [klayout-pex-plugin-palace](https://github.com/iic-jku/klayout-pex-plugin-palace).
+The built-in exporters write capacitance input. They do not extract a resistance network from `SHEET`, `PER_CUT`, or terminal records. The separate Elmer and Palace packages for this KPEX release are [`kpex-plugin-elmer`](https://github.com/iic-jku/kpex-plugin-elmer) and [`kpex-plugin-palace`](https://github.com/iic-jku/kpex-plugin-palace), starting with their `0.3.0` releases.
 
 #### Pipelines and explicit encodings {#sec-pex25d-pipes}
 
@@ -560,16 +560,16 @@ For filenames without conventional suffixes, supply **both** `--in-kind file|sce
 
 ### Protobuf API: Python Preparation and C++ Consumers {#sec-pex25d-api}
 
-The [PEX25D schemas](https://github.com/iic-jku/klayout-pex/tree/main/protos/kpex/pex25d) define the file and scene messages, exact units, geometry, dielectric and resistance records, terminals, domain, diagnostics, and source references. Generated bindings let another language read binary artifacts without implementing the text parser. An adapter should consume `PEX25DScene` and use the shared resolver for file input.
+The [PEX25D schemas](https://github.com/iic-jku/kpex/tree/main/protos/kpex/pex25d) define the file and scene messages, exact units, geometry, dielectric and resistance records, terminals, domain, diagnostics, and source references. Generated bindings let another language read binary artifacts without implementing the text parser. An adapter should consume `PEX25DScene` and use the shared resolver for file input.
 
-One import is enough: `from klayout_pex import pex25d` provides the verbs `read`, `write`, `resolve`, `validate`, `import_file`, `export` and `show`, the artifact and diagnostics types, every error the pipeline raises, and `pex25d.proto` for the generated messages (`pex25d.proto.PEX25DFile()`, or a module such as `pex25d.proto.dielectric` for its enums). Names listed in `pex25d.__all__` are the supported surface, while the submodules stay importable for the classes behind the verbs, e.g. `resolver.Resolver` and `validator.Validator`.
+One import is enough: `from kpex import pex25d` provides the verbs `read`, `write`, `resolve`, `validate`, `import_file`, `export` and `show`, the artifact and diagnostics types, every error the pipeline raises, and `pex25d.proto` for the generated messages (`pex25d.proto.PEX25DFile()`, or a module such as `pex25d.proto.dielectric` for its enums). Names listed in `pex25d.__all__` are the supported surface, while the submodules stay importable for the classes behind the verbs, e.g. `resolver.Resolver` and `validator.Validator`.
 
-`read()` and `write()` take a path in any supported encoding and derive kind and encoding from the conventional suffixes (@sec-pex25d-filenames); `read_text()` and `write_text()` work on the bytes of the text format. `validate()` fills a diagnostics report and never raises for an invalid message; `resolve()` computes the scene and raises `ResolveError` when resolution cannot proceed. Reading, writing and structural policy validation do not import `klayout` at runtime. Resolving accounting masks needs its geometry backend, as described in @sec-pex25d-accounting-grid. They are distributed within `klayout-pex`, whose normal installation includes `klayout>=0.30.12`, `protobuf` and the other declared dependencies.
+`read()` and `write()` take a path in any supported encoding and derive kind and encoding from the conventional suffixes (@sec-pex25d-filenames); `read_text()` and `write_text()` work on the bytes of the text format. `validate()` fills a diagnostics report and never raises for an invalid message; `resolve()` computes the scene and raises `ResolveError` when resolution cannot proceed. Reading, writing and structural policy validation do not import `klayout` at runtime. Resolving accounting masks needs its geometry backend, as described in @sec-pex25d-accounting-grid. They are distributed within `kpex`, whose normal installation includes `klayout>=0.30.14`, `protobuf` and the other declared dependencies.
 
 This Python example loads and resolves the downloadable file, then requests native FasterCap input and STL solids through the exporter API:
 
 ```python
-from klayout_pex import pex25d
+from kpex import pex25d
 
 report = pex25d.DiagnosticsReport(warnings_are_errors=True)
 description = pex25d.read("two_nets.pex25d", report=report, with_source_refs=True)

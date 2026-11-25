@@ -126,7 +126,7 @@ A marker over routing costs that wire much of its capacitance, so a warning name
 
 Test pattern `exclusion_wire_through`, a `Metal3` wire of 60 µm x 2 µm with a marker over its middle third, is the example of the variants below:
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_wire_through.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_wire_through.gds.gz>
 
 {{< include /figures/test_patterns/exclusion_wire_through_-_layout.qmd >}}
 
@@ -202,7 +202,7 @@ A port is one node, which is right across the current, also on a wide wire. Wher
 
 Metal that only a model joins is one net in LVS, but apart in the netlist with `ports`, so the capacitances between it count, unlike within a net otherwise. In test pattern `exclusion_hairpin` (@fig-exclusion-hairpin), two `Metal3` wires 2 µm apart end within the marker, where a bridge joins them. In `exclusion_hairpin_open`, the bridge has a gap, so they are two nets. With `ports`, both have the same values:
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_hairpin.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_hairpin.gds.gz>
 
 {{< include /figures/test_patterns/exclusion_hairpin_-_layout.qmd >}}
 
@@ -224,7 +224,7 @@ To check that a model fits, a test extracts the part of the wire within the mark
 
 Test pattern `exclusion_plate_neighbor` (@fig-exclusion-plate-neighbor), a `Metal3` plate `P` just within a marker, with a `Metal3` wire `N` 0.3 µm beside it. `N` keeps all of its values, as it is out, and `P` keeps only its capacitance to `N`.
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_plate_neighbor.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_plate_neighbor.gds.gz>
 
 {{< include /figures/test_patterns/exclusion_plate_neighbor_-_layout.qmd >}}
 
@@ -258,7 +258,7 @@ In `exclusion_via_across`, the center of the via is outside the marker, so it ke
 
 Test pattern `exclusion_nmos_diode2` (@fig-exclusion-nmos-diode2), with a marker over a MOS transistor. The metal of its nets leaves the marker on `Metal1` and `Metal2`.
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_nmos_diode2.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_nmos_diode2.gds.gz>
 
 {{< include /figures/test_patterns/exclusion_nmos_diode2_-_layout.qmd >}}
 
@@ -323,7 +323,7 @@ The prefix:
 
 Test pattern `cut_block_with_mos` has the MOS of the design `nmos_diode2` in the cell `block`, whose pins `VDD` and `VSS` on `Metal3` the top cell wires on to `A` and `B`, and a `Metal5` wire `R` over the cell (@fig-cut-block-with-mos). With `--cut block=X`:
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cut_block_with_mos.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cut_block_with_mos.gds.gz>
 
 {{< include /figures/test_patterns/cut_block_with_mos.qmd >}}
 
@@ -391,7 +391,7 @@ Where a net is two conductors, the values around it differ by up to 2.5 %, as th
 
 The pcells draw `NoRCX.drawing`, and the LVS deck of `KPEX` recognizes the inductor as a subcircuit with its terminals at its leads, so a model replaces it by its name, without any ports. What `--exclusion-markers` changes is the rest of what is within its polygon, such as a wire under the coil (`exclusion_inductor2_wire_under`, @fig-exclusion-inductor2-wire-under, with `--blackbox y`):
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_inductor2_wire_under.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/exclusion_inductor2_wire_under.gds.gz>
 
 {{< include /figures/test_patterns/exclusion_inductor2_wire_under_-_layout.qmd >}}
 
@@ -404,11 +404,11 @@ GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13
 
 So a model of the coil that has that wire in its simulation should be used with `tie` or `ports`, and one without with `ignore`.
 
-This is what [#121](https://github.com/iic-jku/klayout-pex/issues/121) asks for: most of a circuit with the 2.5D engine, and EM models for the sensitive RF parts.
+This is what [#121](https://github.com/iic-jku/kpex/issues/121) asks for: most of a circuit with the 2.5D engine, and EM models for the sensitive RF parts.
 
 #### Coil of LC Oscillator
 
-[#213](https://github.com/iic-jku/klayout-pex/issues/213) extracts the core of an oscillator without the coil of its tank, which has an EM-fitted model, but with its leads and its guard ring, with ports where the core meets the coil. Outside `KPEX`, this took a cut of the GDS, with workarounds for the recognition texts of devices and the labels of child cells.
+[#213](https://github.com/iic-jku/kpex/issues/213) extracts the core of an oscillator without the coil of its tank, which has an EM-fitted model, but with its leads and its guard ring, with ports where the core meets the coil. Outside `KPEX`, this took a cut of the GDS, with workarounds for the recognition texts of devices and the labels of child cells.
 
 Test pattern `cut_coil` (@fig-cut-coil) is a small layout with these parts, not that design:
 
@@ -416,7 +416,7 @@ Test pattern `cut_coil` (@fig-cut-coil) is a small layout with these parts, not 
 - wires of the top cell, which go on from the stubs to `OSCP`, `OSCN` and `VCT`, and a stub with the label `VDD` on the guard ring
 - a `Metal5` wire `VC` of the top cell under the coil
 
-GDS: <https://github.com/iic-jku/klayout-pex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cut_coil.gds.gz>
+GDS: <https://github.com/iic-jku/kpex/blob/main/testdata/designs/ihp-sg13g2/test_patterns/cut_coil.gds.gz>
 
 {{< include /figures/test_patterns/cut_coil_-_layout.qmd >}}
 
@@ -492,11 +492,11 @@ Compared with the cut of the GDS:
 | `VDD` ↔ `VSUBS` | 29.917 | 29.917 |
 : Capacitances of `exclusion_coil_guard_ring` {#tbl-exclusion-coil-guard-ring}
 
-The second part of [#213](https://github.com/iic-jku/klayout-pex/issues/213), every label a port for the wiring between hard blocks, is what the netlists of `--mode R` and `RC` do for the labels of a net in the top cell. Labels in the cells of the blocks become ports with `--cut`.
+The second part of [#213](https://github.com/iic-jku/kpex/issues/213), every label a port for the wiring between hard blocks, is what the netlists of `--mode R` and `RC` do for the labels of a net in the top cell. Labels in the cells of the blocks become ports with `--cut`.
 
 #### Power Grid of Block
 
-[#85](https://github.com/iic-jku/klayout-pex/issues/85) extracts a block whose power grid is part of the top level:
+[#85](https://github.com/iic-jku/kpex/issues/85) extracts a block whose power grid is part of the top level:
 
 ```bash
 kpex extract --pdk ihp-sg13g2 --gds block.gds.gz --2.5D --mode RC \

@@ -185,7 +185,7 @@ For overlap capacitance, the density within one layer pair is uniform per area, 
 
 The `sky130A` pattern below has a tapered conductor `A`, a bent conductor `B`, and a rectangular conductor `C`. The `A` ↔ `B` gap varies along the taper, whereas part of the `B` ↔ `C` gap is constant.
 
-GDS: [`sidewall_non_parallel_li1.gds.gz`](https://github.com/iic-jku/klayout-pex/blob/v0.9.0/testdata/designs/sky130A/test_patterns/sidewall_non_parallel_li1.gds.gz)
+GDS: [`sidewall_non_parallel_li1.gds.gz`](https://github.com/iic-jku/kpex/blob/v0.9.0/testdata/designs/sky130A/test_patterns/sidewall_non_parallel_li1.gds.gz)
 
 {{< include /figures/polygon-nonparallel-layout.qmd >}}
 
